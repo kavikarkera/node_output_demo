@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Custom module to add the site API key and validate node access.
+ */
+
+/**
+* Implements hook_form_FORM_ID_alter().
+* @param $form
+*   form values passed as an argument.
+* @param $form_state
+*   form state values passed as an argument.
+* @param $form_id
+*   form id passed as an argument.
+* @return
+*   Nothing, this function is to add a new field to the site-information form.
+*/
+function node_output_demo_form_system_site_information_settings_alter(&$form, $form_state, $form_id)
+{
+    $api_val = \Drupal::config('node_output_demo.apikey')->get('siteapikey');
+    $default_val =  !empty($api_val)  ? $api_val : 'No API Key yet';
+    if ($def_val !== 'No API Key yet') {
+        $form['actions']['submit']['#value'] = 'Update Configuration';
+    }
+    $form['site_api_key'] = array (
+      '#type' => 'textfield',
+      '#title' => 'Please enter the Site API Key',
+      '#default_value' => $default_val,
+      '#size' => 60,
+      '#maxlength' => 128,
+    );
+    $form['actions']['submit']['#submit'][] = 'node_output_demo_siteinfo_submit';
+}
+
+/**
+* Implements custom submit handler.
+* @param $form
+*   form values passed as an argument.
+* @param $form_state
+*   form state values passed as an argument.
+*/
+function node_output_demo_siteinfo_submit($form, &$form_state) 
+{
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('node_output_demo.apikey');
+    $config->set('siteapikey', $form_state->getValue('site_api_key'));
+    $config->save(true);
+    drupal_set_message('Site key API has been saved with "' . $form_state->getValue('site_api_key') . '" value.');
+}

@@ -1,0 +1,7 @@
+name: Node output demo Module
+type: module
+description: 'Custom module to add the site API key and validate node access.'
+package: Custom
+version: 8.x
+core: 8.x
+project: 'drupal'

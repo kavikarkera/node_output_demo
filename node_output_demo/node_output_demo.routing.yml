@@ -1,0 +1,7 @@
+node_output_demo.demo:
+  path: '/demo/{api_key}/{nid}'
+  defaults:
+    _controller: '\Drupal\node_output_demo\Controller\NodedemoController::nodecontent'
+    _title: 'Demo'
+  requirements:
+   _custom_access: '\Drupal\node_output_demo\Controller\NodedemoController::contentaccess'
