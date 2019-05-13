@@ -33,11 +33,11 @@ class NodedemoController extends ControllerBase
     {
         if (is_numeric($nid)) {
             $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-            if (!empty($node)) {
+            if (!empty($node) && $node->getType() == 'page') {
                 $node_body_value = $node->get('body')->getValue();
                 $output = Json::encode($node_body_value[0]);
             } else {
-                $output = "Node does not exist";
+                $output = "Node does not exist or does not belong to content type page";
             }
             
         } else {
